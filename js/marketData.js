@@ -34,7 +34,6 @@ class MarketData {
 
         // Initialize market data for each symbol
         MARKET_SYMBOLS.forEach(symbol => {
-            // Only initialize if no data exists
             if (!this.prices[symbol]) {
                 this.prices[symbol] = {
                     price: initialPrices[symbol],
@@ -49,6 +48,7 @@ class MarketData {
 
         this.startSimulation();
         this.initializeChart();
+        this.initializeTimeButtons();
     }
 
     /**
@@ -186,19 +186,27 @@ class MarketData {
         const ctx = this.ctx;
         const data = this.priceHistory[this.selectedSymbol];
         
-        ctx.fillStyle = isDarkMode ? '#1a1a1a' : '#000';
+        // Clear the canvas
+        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        ctx.fillStyle = isDarkMode ? '#1a1a1a' : '#ffffff';
         ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
-        if (data.length < 2) return;
+        if (!data || data.length < 2) return;
+
+        // Filter data based on timeframe
+        const cutoffTime = new Date(Date.now() - (this.timeframe * 60 * 1000));
+        const filteredData = data.filter(d => d.timestamp > cutoffTime);
         
-        const prices = data.map(d => d.price);
+        const prices = filteredData.map(d => d.price);
         const minPrice = Math.min(...prices);
         const maxPrice = Math.max(...prices);
         const priceRange = maxPrice - minPrice;
         
-        ctx.strokeStyle = isDarkMode ? '#444' : '#333';
+        // Draw grid
+        ctx.strokeStyle = isDarkMode ? '#444' : '#eee';
         ctx.lineWidth = 1;
         
+        // Vertical grid lines
         for (let i = 0; i < 10; i++) {
             const x = (this.canvas.width / 9) * i;
             ctx.beginPath();
@@ -207,6 +215,7 @@ class MarketData {
             ctx.stroke();
         }
         
+        // Horizontal grid lines
         for (let i = 0; i < 5; i++) {
             const y = (this.canvas.height / 4) * i;
             ctx.beginPath();
@@ -215,6 +224,7 @@ class MarketData {
             ctx.stroke();
         }
         
+        // Draw price line
         const gradient = ctx.createLinearGradient(0, 0, 0, this.canvas.height);
         gradient.addColorStop(0, isDarkMode ? '#00cccc' : '#00ffff');
         gradient.addColorStop(1, isDarkMode ? '#2ecc71' : '#32cd32');
@@ -222,8 +232,8 @@ class MarketData {
         ctx.lineWidth = 2;
         ctx.beginPath();
         
-        data.forEach((point, i) => {
-            const x = (i / (data.length - 1)) * this.canvas.width;
+        filteredData.forEach((point, i) => {
+            const x = (i / (filteredData.length - 1)) * this.canvas.width;
             const y = this.canvas.height - 
                      ((point.price - minPrice) / priceRange) * this.canvas.height;
             
@@ -236,19 +246,20 @@ class MarketData {
         
         ctx.stroke();
         
-        ctx.fillStyle = isDarkMode ? '#e6c200' : '#ffd700';
-        ctx.font = '12px Courier New';
-        ctx.textAlign = 'right';
-        
+        // Draw time labels
         ctx.textAlign = 'center';
         ctx.fillStyle = isDarkMode ? '#777' : '#888';
-        const now = new Date();
-        for (let i = 0; i < 5; i++) {
-            const x = this.canvas.width - (this.canvas.width / 4) * i;
-            const time = new Date(now - (i * 15 * 60 * 1000));
-            ctx.fillText(time.toLocaleTimeString(), x, this.canvas.height - 5);
+        const timeLabels = Math.min(5, filteredData.length);
+        for (let i = 0; i < timeLabels; i++) {
+            const x = this.canvas.width - (this.canvas.width / (timeLabels - 1)) * i;
+            const dataPoint = filteredData[Math.floor((filteredData.length - 1) * (1 - i / (timeLabels - 1)))];
+            if (dataPoint) {
+                const time = dataPoint.timestamp;
+                ctx.fillText(time.toLocaleTimeString(), x, this.canvas.height - 5);
+            }
         }
         
+        // Draw price labels
         ctx.textAlign = 'right';
         ctx.fillStyle = isDarkMode ? '#e6c200' : '#ffd700';
         for (let i = 0; i <= 4; i++) {
@@ -257,8 +268,9 @@ class MarketData {
             ctx.fillText(price.toFixed(2), this.canvas.width - 5, y + 4);
         }
         
-        const currentPrice = data[data.length - 1].price;
-        ctx.fillStyle = isDarkMode ? '#e1e1e1' : '#fff';
+        // Draw current price
+        const currentPrice = filteredData[filteredData.length - 1].price;
+        ctx.fillStyle = isDarkMode ? '#e1e1e1' : '#000000';
         ctx.fillText(`Current: ${currentPrice.toFixed(2)}`, this.canvas.width - 5, 20);
     }
 
@@ -278,6 +290,18 @@ class MarketData {
                 </span>
             </div>
         `).join('');
+    }
+
+    initializeTimeButtons() {
+        const timeButtons = document.querySelectorAll('.time-button');
+        timeButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                timeButtons.forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                this.timeframe = parseInt(e.target.getAttribute('data-time'));
+                this.renderChart();
+            });
+        });
     }
 }
 
