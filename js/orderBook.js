@@ -37,10 +37,14 @@ class OrderBook {
         const currentMarketPrice = marketData.prices[order.symbol]?.price;
 
         if (order.orderType === 'MARKET') {
-            if (order.side === 'BUY' && this.asks.length > 0) {
-                order.price = this.asks[0].price;
-            } else if (order.side === 'SELL' && this.bids.length > 0) {
-                order.price = this.bids[0].price;
+            // Find matching orders for the same symbol
+            const matchingAsks = this.asks.filter(ask => ask.symbol === order.symbol);
+            const matchingBids = this.bids.filter(bid => bid.symbol === order.symbol);
+            
+            if (order.side === 'BUY' && matchingAsks.length > 0) {
+                order.price = matchingAsks[0].price;
+            } else if (order.side === 'SELL' && matchingBids.length > 0) {
+                order.price = matchingBids[0].price;
             } else {
                 if (!currentMarketPrice) {
                     Swal.fire({
@@ -104,6 +108,19 @@ class OrderBook {
         while (this.bids.length > 0 && this.asks.length > 0) {
             const topBid = this.bids[0];
             const topAsk = this.asks[0];
+
+            if (topBid.symbol !== topAsk.symbol) {
+                if (this.bids.length > 1 && this.asks.length > 1) {
+                    if (this.bids[1].price >= topAsk.price && this.bids[1].symbol === topAsk.symbol) {
+                        this.bids.shift();
+                        continue;
+                    } else if (topBid.price >= this.asks[1].price && topBid.symbol === this.asks[1].symbol) {
+                        this.asks.shift();
+                        continue;
+                    }
+                }
+                break;
+            }
 
             if (topBid.price >= topAsk.price) {
                 const matchedQuantity = Math.min(topBid.quantity, topAsk.quantity);
