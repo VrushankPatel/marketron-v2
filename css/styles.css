@@ -54,6 +54,8 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
     margin: 0;
     min-height: 100vh;
+    min-width: 1200px;
+    overflow-x: auto;
 }
 
 /* Ensure the background color transitions smoothly */
@@ -71,6 +73,7 @@ html, body {
 
 .container {
     max-width: 1200px;
+    min-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     background-color: transparent;
