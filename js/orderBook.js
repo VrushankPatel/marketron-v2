@@ -4,6 +4,7 @@ class OrderBook {
         this.asks = [];
         this.loadPersistedData();
         this.initializeEventListeners();
+        this.checkForMatches();
         this.render();
     }
 
@@ -15,6 +16,10 @@ class OrderBook {
             
             this.bids.forEach(bid => bid.timestamp = new Date(bid.timestamp));
             this.asks.forEach(ask => ask.timestamp = new Date(ask.timestamp));
+            
+            setTimeout(() => {
+                this.checkForMatches();
+            }, 0);
         }
     }
 
@@ -112,16 +117,28 @@ class OrderBook {
             const topAsk = this.asks[0];
 
             if (topBid.symbol !== topAsk.symbol) {
-                if (this.bids.length > 1 && this.asks.length > 1) {
-                    if (this.bids[1].price >= topAsk.price && this.bids[1].symbol === topAsk.symbol) {
-                        this.bids.shift();
-                        continue;
-                    } else if (topBid.price >= this.asks[1].price && topBid.symbol === this.asks[1].symbol) {
-                        this.asks.shift();
-                        continue;
-                    }
+                // Find matching orders for the same symbol
+                const matchingAsks = this.asks.findIndex(ask => ask.symbol === topBid.symbol);
+                const matchingBids = this.bids.findIndex(bid => bid.symbol === topAsk.symbol);
+                
+                if (matchingAsks !== -1 && this.bids[0].price >= this.asks[matchingAsks].price) {
+                    // Move the matching ask to the top
+                    const [matchingAsk] = this.asks.splice(matchingAsks, 1);
+                    this.asks.unshift(matchingAsk);
+                    continue;
+                } else if (matchingBids !== -1 && this.bids[matchingBids].price >= this.asks[0].price) {
+                    // Move the matching bid to the top
+                    const [matchingBid] = this.bids.splice(matchingBids, 1);
+                    this.bids.unshift(matchingBid);
+                    continue;
                 }
-                break;
+                // If no matches found, remove the top order that's least likely to match
+                if (this.asks.length > this.bids.length) {
+                    this.asks.shift();
+                } else {
+                    this.bids.shift();
+                }
+                continue;
             }
 
             if (topBid.price >= topAsk.price) {
