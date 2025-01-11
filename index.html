@@ -145,19 +145,24 @@
                         <div id="comboLegsContainer"></div>
                     </div>
 
-                    <div class="fix-fields">
-                        <h3>FIX Protocol Fields (Optional)</h3>
-                        <div class="form-group">
-                            <label for="senderCompId">Sender Comp ID (Optional):</label>
-                            <input type="text" id="senderCompId" placeholder="Enter Sender Comp ID if needed">
+                    <div class="fix-fields collapsed">
+                        <div class="fix-header" onclick="orderEntry.toggleFixFields(event)">
+                            <h3>FIX Protocol Fields (Optional)</h3>
+                            <span class="expand-icon">+</span>
                         </div>
-                        <div class="form-group">
-                            <label for="senderSubId">Sender Sub ID (Optional):</label>
-                            <input type="text" id="senderSubId" placeholder="Enter Sender Sub ID if needed">
-                        </div>
-                        <div class="form-group">
-                            <label for="targetCompId">Target Comp ID (Optional):</label>
-                            <input type="text" id="targetCompId" placeholder="Enter Target Comp ID if needed">
+                        <div class="fix-content">
+                            <div class="form-group">
+                                <label for="senderCompId">Sender Comp ID (Optional):</label>
+                                <input type="text" id="senderCompId" placeholder="Enter Sender Comp ID if needed">
+                            </div>
+                            <div class="form-group">
+                                <label for="senderSubId">Sender Sub ID (Optional):</label>
+                                <input type="text" id="senderSubId" placeholder="Enter Sender Sub ID if needed">
+                            </div>
+                            <div class="form-group">
+                                <label for="targetCompId">Target Comp ID (Optional):</label>
+                                <input type="text" id="targetCompId" placeholder="Enter Target Comp ID if needed">
+                            </div>
                         </div>
                     </div>
 

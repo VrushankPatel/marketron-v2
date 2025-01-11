@@ -309,9 +309,41 @@ button:hover {
     border-radius: 4px;
 }
 
+.fix-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.expand-icon {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--text-color);
+    transition: transform 0.3s ease;
+}
+
+.fix-fields.collapsed .fix-content {
+    display: none;
+}
+
+.fix-fields.collapsed .expand-icon {
+    transform: rotate(0deg);
+}
+
+.fix-fields:not(.collapsed) .expand-icon {
+    transform: rotate(45deg);
+}
+
+.fix-content {
+    margin-top: 15px;
+}
+
 .fix-fields h3 {
     color: #495057;
     margin-bottom: 10px;
+    margin: 0;
 }
 
 /* Optional fields styling */

@@ -262,6 +262,16 @@ class OrderEntry {
     validateSymbol(symbol) {
         return MARKET_SYMBOLS.includes(symbol.toUpperCase());
     }
+
+    /**
+     * @method toggleFixFields
+     * @description Toggles the visibility of FIX Protocol fields
+     * @param {Event} event - The click event
+     */
+    toggleFixFields(event) {
+        const fixFields = event.currentTarget.closest('.fix-fields');
+        fixFields.classList.toggle('collapsed');
+    }
 }
 
 const orderEntry = new OrderEntry(); 
