@@ -2,7 +2,30 @@ class OrderBook {
     constructor() {
         this.bids = [];
         this.asks = [];
+        this.loadPersistedData();
         this.initializeEventListeners();
+        this.render();
+    }
+
+    loadPersistedData() {
+        const data = persistenceService.loadData();
+        if (data && data.orderBook) {
+            this.bids = data.orderBook.bids || [];
+            this.asks = data.orderBook.asks || [];
+            
+            // Reconstruct Date objects for timestamps
+            this.bids.forEach(bid => bid.timestamp = new Date(bid.timestamp));
+            this.asks.forEach(ask => ask.timestamp = new Date(ask.timestamp));
+        }
+    }
+
+    persistData() {
+        const currentData = persistenceService.loadData() || {};
+        currentData.orderBook = {
+            bids: this.bids,
+            asks: this.asks
+        };
+        persistenceService.saveData(currentData);
     }
 
     initializeEventListeners() {
@@ -24,6 +47,7 @@ class OrderBook {
 
         this.render();
         this.checkForMatches();
+        this.persistData();
     }
 
     handleComboOrder(order) {

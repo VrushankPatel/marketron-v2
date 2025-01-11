@@ -10,7 +10,9 @@ class OrderMatching {
      */
     constructor() {
         this.trades = [];
+        this.loadPersistedData();
         this.initializeEventListeners();
+        this.render();
     }
 
     /**
@@ -31,6 +33,7 @@ class OrderMatching {
     handleNewTrade(trade) {
         this.trades.unshift(trade);
         this.render();
+        this.persistData();
     }
 
     /**
@@ -47,6 +50,20 @@ class OrderMatching {
                 <span class="trade-time">Time: ${trade.timestamp.toLocaleTimeString()}</span>
             </div>
         `).join('');
+    }
+
+    loadPersistedData() {
+        const data = persistenceService.loadData();
+        if (data && data.trades) {
+            this.trades = data.trades || [];
+            this.trades.forEach(trade => trade.timestamp = new Date(trade.timestamp));
+        }
+    }
+
+    persistData() {
+        const currentData = persistenceService.loadData() || {};
+        currentData.trades = this.trades;
+        persistenceService.saveData(currentData);
     }
 }
 
