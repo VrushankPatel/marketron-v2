@@ -132,13 +132,8 @@ class OrderBook {
                     this.bids.unshift(matchingBid);
                     continue;
                 }
-                // If no matches found, remove the top order that's least likely to match
-                if (this.asks.length > this.bids.length) {
-                    this.asks.shift();
-                } else {
-                    this.bids.shift();
-                }
-                continue;
+                // If no matches found for different symbols, break the loop
+                break;
             }
 
             if (topBid.price >= topAsk.price) {
