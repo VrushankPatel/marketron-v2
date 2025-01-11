@@ -207,8 +207,14 @@ button:hover {
     display: flex;
     overflow-x: auto;
     padding: 10px;
-    background-color: #f8f9fa;
+    background-color: var(--section-bg);
     border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .ticker-container {
+    background-color: #252525;
+    border-color: #444;
 }
 
 .trades-container {
@@ -430,8 +436,9 @@ button:hover {
 }
 
 [data-theme="dark"] .ticker-item {
-    background-color: #1a1a1a;
+    background-color: #1e1e1e;
     border: 1px solid #444;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 [data-theme="dark"] .ticker-item .symbol {
