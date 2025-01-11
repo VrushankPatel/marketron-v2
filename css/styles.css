@@ -488,4 +488,44 @@ button:hover {
 
 [data-theme="dark"] .developer-info a:hover {
     color: #00ffff;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.reset-button {
+    background: none;
+    border: none;
+    color: var(--header-text);
+    cursor: pointer;
+    padding: 8px;
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+.reset-button .reset-text {
+    width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: width 0.3s ease;
+    font-size: 14px;
+}
+
+.reset-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+}
+
+.reset-button:hover .reset-text {
+    width: 45px;
+}
+
+.reset-icon {
+    min-width: 24px;
 } 
