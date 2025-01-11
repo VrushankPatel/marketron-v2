@@ -34,14 +34,15 @@ class OrderBook {
 
     handleNewOrder(order) {
         console.log('OrderBook received new order:', order);
+        const currentMarketPrice = marketData.prices[order.symbol]?.price;
+
         if (order.orderType === 'MARKET') {
             if (order.side === 'BUY' && this.asks.length > 0) {
                 order.price = this.asks[0].price;
             } else if (order.side === 'SELL' && this.bids.length > 0) {
                 order.price = this.bids[0].price;
             } else {
-                const currentPrice = marketData.prices[order.symbol]?.price;
-                if (!currentPrice) {
+                if (!currentMarketPrice) {
                     Swal.fire({
                         title: 'Market Order Error',
                         text: 'Unable to determine market price. Please try again.',
@@ -50,7 +51,14 @@ class OrderBook {
                     });
                     return;
                 }
-                order.price = currentPrice;
+                order.price = currentMarketPrice;
+            }
+            snackbarService.show(`Market order placed at current price: ${order.price.toFixed(2)}`);
+        } else {
+            if (order.side === 'BUY' && order.price > currentMarketPrice * 1.2) {
+                snackbarService.show(`Warning: Buy price is 20% above market price`, 'error');
+            } else if (order.side === 'SELL' && order.price < currentMarketPrice * 0.8) {
+                snackbarService.show(`Warning: Sell price is 20% below market price`, 'error');
             }
         }
 
