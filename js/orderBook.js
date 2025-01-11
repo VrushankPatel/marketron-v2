@@ -57,12 +57,14 @@ class OrderBook {
                 }
                 order.price = currentMarketPrice;
             }
-            snackbarService.show(`Market order placed at current price: ${order.price.toFixed(2)}`);
+            snackbarService.show(`${order.side} ${order.quantity} ${order.symbol} @ ${order.price.toFixed(2)}`, 'info');
         } else {
             if (order.side === 'BUY' && order.price > currentMarketPrice * 1.2) {
                 snackbarService.show(`Warning: Buy price is 20% above market price`, 'error');
             } else if (order.side === 'SELL' && order.price < currentMarketPrice * 0.8) {
                 snackbarService.show(`Warning: Sell price is 20% below market price`, 'error');
+            } else {
+                snackbarService.show(`${order.side} ${order.quantity} ${order.symbol} @ ${order.price.toFixed(2)}`, 'info');
             }
         }
 
@@ -142,7 +144,11 @@ class OrderBook {
                 if (topBid.quantity === 0) this.bids.shift();
                 if (topAsk.quantity === 0) this.asks.shift();
 
-                snackbarService.show(`Trade executed: ${matchedQuantity} @ ${matchPrice.toFixed(2)}`);
+                snackbarService.show(
+                    `Trade executed: ${matchedQuantity} ${topBid.symbol} @ ${matchPrice.toFixed(2)} ` + 
+                    `(${topBid.orderType} ${topBid.side} vs ${topAsk.orderType} ${topAsk.side})`,
+                    'success'
+                );
             } else {
                 break;
             }

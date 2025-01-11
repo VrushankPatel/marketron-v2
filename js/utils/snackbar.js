@@ -1,11 +1,13 @@
 /**
  * @class SnackbarService
- * @description Handles snackbar notifications
+ * @description Handles snackbar notifications with queue support
  * @author Vrushank Patel
  */
 class SnackbarService {
     constructor() {
         this.init();
+        this.queue = [];
+        this.isShowing = false;
     }
 
     /**
@@ -27,15 +29,35 @@ class SnackbarService {
      * @description Shows a snackbar message
      * @param {string} message - Message to display
      * @param {string} type - Type of message (success/error)
-     * @author Vrushank Patel
      */
     show(message, type = 'success') {
+        this.queue.push({ message, type });
+        if (!this.isShowing) {
+            this.showNext();
+        }
+    }
+
+    /**
+     * @method showNext
+     * @description Shows the next message in queue
+     */
+    showNext() {
+        if (this.queue.length === 0) {
+            this.isShowing = false;
+            return;
+        }
+
+        this.isShowing = true;
+        const { message, type } = this.queue.shift();
         const snackbar = document.getElementById('snackbar');
         snackbar.textContent = message;
         snackbar.className = 'snackbar show ' + type;
 
         setTimeout(() => {
             snackbar.className = snackbar.className.replace('show', '');
+            setTimeout(() => {
+                this.showNext();
+            }, 300); // Wait for fade out animation
         }, 3000);
     }
 }

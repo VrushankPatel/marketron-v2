@@ -230,7 +230,7 @@ class OrderEntry {
         this.initializeSymbolDropdown();
         this.initializeLegSymbolDropdown();
         
-        snackbarService.show('Order placed successfully');
+        // snackbarService.show('Order placed successfully');
     }
 
     /**
