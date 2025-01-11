@@ -17,6 +17,8 @@ class ThemeToggle {
     initialize() {
         if (this.theme === 'dark') {
             document.documentElement.setAttribute('data-theme', 'dark');
+            const modeText = document.querySelector('.theme-toggle .mode-text');
+            modeText.textContent = 'Light Mode';
         }
 
         this.toggleButton.addEventListener('click', () => this.toggleTheme());
@@ -31,6 +33,10 @@ class ThemeToggle {
         this.theme = this.theme === 'light' ? 'dark' : 'light';
         document.documentElement.setAttribute('data-theme', this.theme);
         localStorage.setItem('theme', this.theme);
+        
+        // Update the mode text
+        const modeText = document.querySelector('.theme-toggle .mode-text');
+        modeText.textContent = this.theme === 'light' ? 'Dark Mode' : 'Light Mode';
     }
 }
 

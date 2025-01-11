@@ -97,12 +97,26 @@ html, body {
     width: auto;
     display: flex;
     align-items: center;
+    gap: 5px;
     justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle .mode-text {
+    width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: width 0.3s ease;
+    font-size: 14px;
 }
 
 .theme-toggle:hover {
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
+    border-radius: 20px;
+}
+
+.theme-toggle:hover .mode-text {
+    width: 75px;
 }
 
 .theme-toggle .sun-icon {
