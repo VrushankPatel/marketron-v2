@@ -375,7 +375,7 @@ button:hover {
 }
 
 .fix-fields label::after {
-    content: " (Optional)";
+    /* content: " (Optional)"; */
     font-size: 0.85em;
     font-weight: normal;
     font-style: italic;
@@ -1131,7 +1131,7 @@ button:hover {
 }
 
 .fix-fields label::after {
-    content: " (Optional)";
+    /* content: " (Optional)"; */
     font-size: 0.85em;
     font-weight: normal;
     font-style: italic;
