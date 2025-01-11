@@ -21,6 +21,29 @@ class MarketData {
         this.initializePrices();
         this.startSimulation();
         this.initializeChart();
+
+        // Add initial price data for all symbols
+        const initialPrices = {
+            'AAPL': 150.0,
+            'GOOGL': 2800.0,
+            'MSFT': 300.0,
+            'AMZN': 3300.0,
+            'TSLA': 750.0,
+            'META': 330.0,
+            'NFLX': 500.0,
+            'NVDA': 450.0,
+            'AMD': 120.0
+        };
+
+        // Initialize market data for each symbol
+        MARKET_SYMBOLS.forEach(symbol => {
+            this.prices[symbol] = {
+                price: initialPrices[symbol],
+                previousPrice: initialPrices[symbol],
+                change: 0
+            };
+            this.priceHistory[symbol] = [];
+        });
     }
 
     /**

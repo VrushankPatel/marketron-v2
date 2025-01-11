@@ -248,8 +248,9 @@ button:hover {
 }
 
 .ticker-container {
-    display: flex;
-    overflow-x: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
     padding: 10px;
     background-color: var(--section-bg);
     border-radius: 4px;
@@ -389,9 +390,7 @@ button:hover {
     background-color: #000;
     color: #fff;
     padding: 10px;
-    margin-right: 10px;
     border-radius: 4px;
-    min-width: 150px;
     border: 1px solid #333;
     display: flex;
     justify-content: space-between;
