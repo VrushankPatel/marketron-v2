@@ -28,10 +28,32 @@ class OrderBook {
     }
 
     initializeEventListeners() {
+        console.log('Initializing OrderBook event listeners');
         document.addEventListener('newOrder', (e) => this.handleNewOrder(e.detail));
     }
 
     handleNewOrder(order) {
+        console.log('OrderBook received new order:', order);
+        if (order.orderType === 'MARKET') {
+            if (order.side === 'BUY' && this.asks.length > 0) {
+                order.price = this.asks[0].price;
+            } else if (order.side === 'SELL' && this.bids.length > 0) {
+                order.price = this.bids[0].price;
+            } else {
+                const currentPrice = marketData.prices[order.symbol]?.price;
+                if (!currentPrice) {
+                    Swal.fire({
+                        title: 'Market Order Error',
+                        text: 'Unable to determine market price. Please try again.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                    return;
+                }
+                order.price = currentPrice;
+            }
+        }
+
         if (order.isCombo) {
             this.handleComboOrder(order);
         } else {
@@ -94,6 +116,8 @@ class OrderBook {
 
                 if (topBid.quantity === 0) this.bids.shift();
                 if (topAsk.quantity === 0) this.asks.shift();
+
+                snackbarService.show(`Trade executed: ${matchedQuantity} @ ${matchPrice.toFixed(2)}`);
             } else {
                 break;
             }
@@ -103,20 +127,23 @@ class OrderBook {
     }
 
     render() {
+        console.log('Rendering OrderBook - Bids:', this.bids, 'Asks:', this.asks);
         const bidsContainer = document.getElementById('bids');
         const asksContainer = document.getElementById('asks');
 
         bidsContainer.innerHTML = '<h3>Bids</h3>' + this.bids.map(order => `
             <div class="order-item">
-                <span>${order.price}</span>
-                <span>${order.quantity}</span>
+                <span class="order-symbol">${order.symbol}</span>
+                <span class="order-price">${order.price ? order.price.toFixed(2) : 'MKT'}</span>
+                <span class="order-quantity">${order.quantity}</span>
             </div>
         `).join('');
 
         asksContainer.innerHTML = '<h3>Asks</h3>' + this.asks.map(order => `
             <div class="order-item">
-                <span>${order.price}</span>
-                <span>${order.quantity}</span>
+                <span class="order-symbol">${order.symbol}</span>
+                <span class="order-price">${order.price ? order.price.toFixed(2) : 'MKT'}</span>
+                <span class="order-quantity">${order.quantity}</span>
             </div>
         `).join('');
     }

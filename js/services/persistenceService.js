@@ -63,6 +63,13 @@ class PersistenceService {
             if (data.trades && !Array.isArray(data.trades)) {
                 return false;
             }
+            if (data.marketData) {
+                if (typeof data.marketData.prices !== 'object') return false;
+                if (typeof data.marketData.priceHistory !== 'object') return false;
+                for (const symbol in data.marketData.priceHistory) {
+                    if (!Array.isArray(data.marketData.priceHistory[symbol])) return false;
+                }
+            }
             return true;
         } catch (error) {
             return false;

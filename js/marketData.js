@@ -9,16 +9,53 @@ class MarketData {
      * @author Vrushank Patel
      */
     constructor() {
-        this.symbols = ['AAPL', 'GOOGL', 'MSFT', 'AMZN'];
+        this.symbols = MARKET_SYMBOLS;
         this.prices = {};
         this.priceHistory = {};
+        this.HISTORY_DURATION = 15 * 60 * 1000; // 15 minutes in milliseconds
         this.canvas = document.getElementById('priceChart');
         this.ctx = this.canvas.getContext('2d');
         this.selectedSymbol = this.symbols[0];
         this.timeframe = 15;
+        this.loadPersistedData();
         this.initializePrices();
         this.startSimulation();
         this.initializeChart();
+    }
+
+    /**
+     * @method loadPersistedData
+     * @description Loads persisted price data from localStorage
+     * @author Vrushank Patel
+     */
+    loadPersistedData() {
+        const data = persistenceService.loadData();
+        if (data && data.marketData) {
+            this.prices = data.marketData.prices || {};
+            this.priceHistory = data.marketData.priceHistory || {};
+            
+            // Reconstruct Date objects for timestamps
+            Object.keys(this.priceHistory).forEach(symbol => {
+                this.priceHistory[symbol] = this.priceHistory[symbol].map(item => ({
+                    ...item,
+                    timestamp: new Date(item.timestamp)
+                }));
+            });
+        }
+    }
+
+    /**
+     * @method persistData
+     * @description Saves price data to localStorage
+     * @author Vrushank Patel
+     */
+    persistData() {
+        const currentData = persistenceService.loadData() || {};
+        currentData.marketData = {
+            prices: this.prices,
+            priceHistory: this.priceHistory
+        };
+        persistenceService.saveData(currentData);
     }
 
     /**
@@ -27,13 +64,16 @@ class MarketData {
      * @author Vrushank Patel
      */
     initializePrices() {
-        this.symbols.forEach(symbol => {
-            this.prices[symbol] = {
-                price: Math.random() * 1000 + 100,
-                change: 0
-            };
-            this.priceHistory[symbol] = [];
-        });
+        // Only initialize prices if they don't exist
+        if (Object.keys(this.prices).length === 0) {
+            this.symbols.forEach(symbol => {
+                this.prices[symbol] = {
+                    price: Math.random() * 1000 + 100,
+                    change: 0
+                };
+                this.priceHistory[symbol] = [];
+            });
+        }
     }
 
     /**
@@ -100,14 +140,15 @@ class MarketData {
                     timestamp: new Date()
                 });
                 
-                const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
+                const cutoffTime = new Date(Date.now() - this.HISTORY_DURATION);
                 this.priceHistory[symbol] = this.priceHistory[symbol].filter(
-                    p => p.timestamp > oneHourAgo
+                    p => p.timestamp > cutoffTime
                 );
             });
             
             this.render();
             this.renderChart();
+            this.persistData();
         }, 1000);
     }
 

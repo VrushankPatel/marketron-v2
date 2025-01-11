@@ -10,13 +10,11 @@ class Order {
         this.timestamp = new Date();
         this.status = 'NEW';
         
-        // FIX-related fields
         this.senderCompId = orderConfig.senderCompId || '';
         this.senderSubId = orderConfig.senderSubId || '';
         this.targetCompId = orderConfig.targetCompId || '';
         this.clOrdId = orderConfig.clOrdId || this.generateClOrdId();
         
-        // Combo order fields
         this.isCombo = orderConfig.isCombo || false;
         this.legs = orderConfig.legs || [];
     }
@@ -39,32 +37,43 @@ class OrderEntry {
         this.form = document.getElementById('orderForm');
         this.initializeEventListeners();
         this.comboLegs = [];
+        this.initializeSymbolDropdown();
     }
 
     initializeEventListeners() {
         this.form.addEventListener('submit', this.handleSubmit.bind(this));
+        this.initializeLegSymbolDropdown();
         
-        // Show/hide price fields based on order type
         document.getElementById('orderType').addEventListener('change', (e) => {
             const priceField = document.querySelector('.price-field');
             const stopPriceField = document.querySelector('.stop-price-field');
+            const priceInput = document.getElementById('price');
+            const stopPriceInput = document.getElementById('stopPrice');
             
             switch(e.target.value) {
                 case 'MARKET':
                     priceField.style.display = 'none';
                     stopPriceField.style.display = 'none';
+                    priceInput.required = false;
+                    stopPriceInput.required = false;
                     break;
                 case 'LIMIT':
                     priceField.style.display = 'block';
                     stopPriceField.style.display = 'none';
+                    priceInput.required = true;
+                    stopPriceInput.required = false;
                     break;
                 case 'STOP':
                     priceField.style.display = 'none';
                     stopPriceField.style.display = 'block';
+                    priceInput.required = false;
+                    stopPriceInput.required = true;
                     break;
                 case 'STOP_LIMIT':
                     priceField.style.display = 'block';
                     stopPriceField.style.display = 'block';
+                    priceInput.required = true;
+                    stopPriceInput.required = true;
                     break;
             }
         });
@@ -80,6 +89,25 @@ class OrderEntry {
         });
     }
 
+    /**
+     * @method initializeLegSymbolDropdown
+     * @description Populates the leg symbol dropdown with available symbols
+     * @author Vrushank Patel
+     */
+    initializeLegSymbolDropdown() {
+        const legSymbolSelect = document.getElementById('legSymbol');
+        legSymbolSelect.innerHTML = '';
+        
+        const defaultOption = new Option('Select a symbol', '', true, true);
+        defaultOption.disabled = true;
+        legSymbolSelect.add(defaultOption);
+        
+        MARKET_SYMBOLS.forEach(symbol => {
+            const option = new Option(symbol, symbol);
+            legSymbolSelect.add(option);
+        });
+    }
+
     addComboLeg() {
         const leg = {
             symbol: document.getElementById('legSymbol').value,
@@ -87,11 +115,20 @@ class OrderEntry {
             side: document.getElementById('legSide').value
         };
         
+        if (!leg.symbol) {
+            Swal.fire({
+                title: 'Invalid Symbol',
+                text: 'Please select a symbol for the combo leg',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+        
         this.comboLegs.push(leg);
         this.renderComboLegs();
         
-        // Clear leg input fields
-        document.getElementById('legSymbol').value = '';
+        document.getElementById('legSymbol').selectedIndex = 0;
         document.getElementById('legRatio').value = '1';
     }
 
@@ -113,6 +150,47 @@ class OrderEntry {
     handleSubmit(e) {
         e.preventDefault();
         
+        // Validate required fields
+        const requiredFields = ['symbol', 'orderType', 'side', 'quantity'];
+        const orderType = document.getElementById('orderType').value;
+        
+        // Add price field validation for LIMIT orders
+        if (orderType === 'LIMIT' || orderType === 'STOP_LIMIT') {
+            requiredFields.push('price');
+        }
+        
+        // Add stop price validation for STOP orders
+        if (orderType === 'STOP' || orderType === 'STOP_LIMIT') {
+            requiredFields.push('stopPrice');
+        }
+        
+        // Check all required fields
+        for (const field of requiredFields) {
+            const element = document.getElementById(field);
+            if (!element.value) {
+                Swal.fire({
+                    title: 'Validation Error',
+                    text: `Please fill in the ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}`,
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                return;
+            }
+        }
+        
+        const symbol = document.getElementById('symbol').value.toUpperCase();
+        console.log('Submitting order for symbol:', symbol);
+        
+        if (!symbol || !this.validateSymbol(symbol)) {
+            Swal.fire({
+                title: 'Invalid Symbol',
+                text: 'Please select a valid trading symbol',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+
         const orderConfig = {
             senderCompId: document.getElementById('senderCompId').value,
             senderSubId: document.getElementById('senderSubId').value,
@@ -121,8 +199,19 @@ class OrderEntry {
             legs: this.comboLegs
         };
 
+        // Validate combo order has at least one leg
+        if (orderConfig.isCombo && this.comboLegs.length === 0) {
+            Swal.fire({
+                title: 'Validation Error',
+                text: 'Combo orders must have at least one leg',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+
         const order = new Order(
-            document.getElementById('symbol').value,
+            symbol,
             document.getElementById('orderType').value,
             document.getElementById('side').value,
             parseFloat(document.getElementById('quantity').value),
@@ -131,14 +220,48 @@ class OrderEntry {
             orderConfig
         );
 
+        console.log('Created order:', order);
         document.dispatchEvent(new CustomEvent('newOrder', { detail: order }));
         
-        // Reset form
         this.form.reset();
         this.comboLegs = [];
         this.renderComboLegs();
+        
+        this.initializeSymbolDropdown();
+        this.initializeLegSymbolDropdown();
+        
+        snackbarService.show('Order placed successfully');
+    }
+
+    /**
+     * @method initializeSymbolDropdown
+     * @description Populates the symbol dropdown with available symbols
+     * @author Vrushank Patel
+     */
+    initializeSymbolDropdown() {
+        const symbolSelect = document.getElementById('symbol');
+        symbolSelect.innerHTML = '';
+        
+        const defaultOption = new Option('Select a symbol', '', true, true);
+        defaultOption.disabled = true;
+        symbolSelect.add(defaultOption);
+        
+        MARKET_SYMBOLS.forEach(symbol => {
+            const option = new Option(symbol, symbol);
+            symbolSelect.add(option);
+        });
+    }
+
+    /**
+     * @method validateSymbol
+     * @description Validates if the symbol is available for trading
+     * @param {string} symbol - Symbol to validate
+     * @returns {boolean} Whether the symbol is valid
+     * @author Vrushank Patel
+     */
+    validateSymbol(symbol) {
+        return MARKET_SYMBOLS.includes(symbol.toUpperCase());
     }
 }
 
-// Initialize order entry
 const orderEntry = new OrderEntry(); 
