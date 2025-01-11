@@ -18,9 +18,6 @@ class MarketData {
         this.selectedSymbol = this.symbols[0];
         this.timeframe = 15;
         this.loadPersistedData();
-        this.initializePrices();
-        this.startSimulation();
-        this.initializeChart();
 
         // Add initial price data for all symbols
         const initialPrices = {
@@ -37,13 +34,21 @@ class MarketData {
 
         // Initialize market data for each symbol
         MARKET_SYMBOLS.forEach(symbol => {
-            this.prices[symbol] = {
-                price: initialPrices[symbol],
-                previousPrice: initialPrices[symbol],
-                change: 0
-            };
-            this.priceHistory[symbol] = [];
+            // Only initialize if no data exists
+            if (!this.prices[symbol]) {
+                this.prices[symbol] = {
+                    price: initialPrices[symbol],
+                    previousPrice: initialPrices[symbol],
+                    change: 0
+                };
+            }
+            if (!this.priceHistory[symbol]) {
+                this.priceHistory[symbol] = [];
+            }
         });
+
+        this.startSimulation();
+        this.initializeChart();
     }
 
     /**
@@ -63,6 +68,12 @@ class MarketData {
                     ...item,
                     timestamp: new Date(item.timestamp)
                 }));
+                
+                // Clean up old data (older than 15 minutes)
+                const cutoffTime = new Date(Date.now() - this.HISTORY_DURATION);
+                this.priceHistory[symbol] = this.priceHistory[symbol].filter(
+                    p => p.timestamp > cutoffTime
+                );
             });
         }
     }
@@ -74,29 +85,19 @@ class MarketData {
      */
     persistData() {
         const currentData = persistenceService.loadData() || {};
+        // Clean up old data before persisting
+        Object.keys(this.priceHistory).forEach(symbol => {
+            const cutoffTime = new Date(Date.now() - this.HISTORY_DURATION);
+            this.priceHistory[symbol] = this.priceHistory[symbol].filter(
+                p => p.timestamp > cutoffTime
+            );
+        });
+
         currentData.marketData = {
             prices: this.prices,
             priceHistory: this.priceHistory
         };
         persistenceService.saveData(currentData);
-    }
-
-    /**
-     * @method initializePrices
-     * @description Initializes random prices for all symbols
-     * @author Vrushank Patel
-     */
-    initializePrices() {
-        // Only initialize prices if they don't exist
-        if (Object.keys(this.prices).length === 0) {
-            this.symbols.forEach(symbol => {
-                this.prices[symbol] = {
-                    price: Math.random() * 1000 + 100,
-                    change: 0
-                };
-                this.priceHistory[symbol] = [];
-            });
-        }
     }
 
     /**
