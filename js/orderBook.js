@@ -133,7 +133,9 @@ class OrderBook {
                     quantity: matchedQuantity,
                     timestamp: new Date(),
                     buyOrderId: topBid.orderId,
-                    sellOrderId: topAsk.orderId
+                    sellOrderId: topAsk.orderId,
+                    buyOrderOriginalQty: topBid.quantity + matchedQuantity,
+                    sellOrderOriginalQty: topAsk.quantity + matchedQuantity
                 };
 
                 document.dispatchEvent(new CustomEvent('newTrade', { detail: trade }));

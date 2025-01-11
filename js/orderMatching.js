@@ -131,12 +131,36 @@ class OrderMatching {
                                             <span>${trade.buyOrder?.orderType || 'N/A'}</span>
                                         </div>
                                         <div class="detail-item">
+                                            <label>Original Quantity:</label>
+                                            <span>${trade.buyOrderOriginalQty || 'N/A'}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <label>Limit Price:</label>
+                                            <span>${trade.buyOrder?.price ? trade.buyOrder.price.toFixed(2) : 'MARKET'}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <label>Stop Price:</label>
+                                            <span>${trade.buyOrder?.stopPrice ? trade.buyOrder.stopPrice.toFixed(2) : 'N/A'}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <label>Order Time:</label>
+                                            <span>${trade.buyOrder?.timestamp.toLocaleString() || 'N/A'}</span>
+                                        </div>
+                                        <div class="detail-item">
                                             <label>Sender Comp ID:</label>
                                             <span>${trade.buyOrder?.senderCompId || 'N/A'}</span>
                                         </div>
                                         <div class="detail-item">
                                             <label>Client Order ID:</label>
                                             <span>${trade.buyOrder?.clOrdId || 'N/A'}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <label>Sender Sub ID:</label>
+                                            <span>${trade.buyOrder?.senderSubId || 'N/A'}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <label>Target Comp ID:</label>
+                                            <span>${trade.buyOrder?.targetCompId || 'N/A'}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -153,12 +177,36 @@ class OrderMatching {
                                             <span>${trade.sellOrder?.orderType || 'N/A'}</span>
                                         </div>
                                         <div class="detail-item">
+                                            <label>Original Quantity:</label>
+                                            <span>${trade.sellOrderOriginalQty || 'N/A'}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <label>Limit Price:</label>
+                                            <span>${trade.sellOrder?.price ? trade.sellOrder.price.toFixed(2) : 'MARKET'}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <label>Stop Price:</label>
+                                            <span>${trade.sellOrder?.stopPrice ? trade.sellOrder.stopPrice.toFixed(2) : 'N/A'}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <label>Order Time:</label>
+                                            <span>${trade.sellOrder?.timestamp.toLocaleString() || 'N/A'}</span>
+                                        </div>
+                                        <div class="detail-item">
                                             <label>Sender Comp ID:</label>
                                             <span>${trade.sellOrder?.senderCompId || 'N/A'}</span>
                                         </div>
                                         <div class="detail-item">
                                             <label>Client Order ID:</label>
                                             <span>${trade.sellOrder?.clOrdId || 'N/A'}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <label>Sender Sub ID:</label>
+                                            <span>${trade.sellOrder?.senderSubId || 'N/A'}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <label>Target Comp ID:</label>
+                                            <span>${trade.sellOrder?.targetCompId || 'N/A'}</span>
                                         </div>
                                     </div>
                                 </div>
