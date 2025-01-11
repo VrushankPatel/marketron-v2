@@ -31,7 +31,15 @@ class OrderMatching {
      * @author Vrushank Patel
      */
     handleNewTrade(trade) {
-        this.trades.unshift(trade);
+        // Find the original orders
+        const buyOrder = orderBook.findOrderById(trade.buyOrderId);
+        const sellOrder = orderBook.findOrderById(trade.sellOrderId);
+        
+        // Enhance trade object with order details
+        trade.buyOrder = buyOrder;
+        trade.sellOrder = sellOrder;
+        
+        this.trades.push(trade);
         this.render();
         this.persistData();
     }
@@ -43,11 +51,22 @@ class OrderMatching {
      */
     render() {
         const container = document.getElementById('tradesContainer');
-        container.innerHTML = this.trades.map(trade => `
-            <div class="trade-item">
-                <span class="trade-price">Price: ${trade.price}</span>
-                <span class="trade-quantity">Quantity: ${trade.quantity}</span>
-                <span class="trade-time">Time: ${trade.timestamp.toLocaleTimeString()}</span>
+        container.innerHTML = this.trades.map((trade, index) => `
+            <div class="trade-card">
+                <div class="trade-summary">
+                    <div class="trade-header">
+                        <span class="trade-symbol">${trade.buyOrder?.symbol || 'Unknown'}</span>
+                        <span class="trade-time">${trade.timestamp.toLocaleTimeString()}</span>
+                    </div>
+                    <div class="trade-details">
+                        <span class="trade-quantity">${trade.quantity}</span>
+                        <span class="trade-at">@</span>
+                        <span class="trade-price">${trade.price.toFixed(2)}</span>
+                    </div>
+                </div>
+                <button class="view-trade-btn" onclick="orderMatching.showTradeDetails(${index})">
+                    View Details
+                </button>
             </div>
         `).join('');
     }
@@ -64,6 +83,107 @@ class OrderMatching {
         const currentData = persistenceService.loadData() || {};
         currentData.trades = this.trades;
         persistenceService.saveData(currentData);
+    }
+
+    showTradeDetails(index) {
+        const trade = this.trades[index];
+        const modalContent = `
+            <div class="modal fade" id="tradeModal" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Trade Capture Report</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="trade-report">
+                                <div class="trade-section main-details">
+                                    <h6>Trade Details</h6>
+                                    <div class="detail-grid">
+                                        <div class="detail-item">
+                                            <label>Symbol:</label>
+                                            <span>${trade.buyOrder?.symbol || 'Unknown'}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <label>Quantity:</label>
+                                            <span>${trade.quantity}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <label>Price:</label>
+                                            <span>${trade.price.toFixed(2)}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <label>Time:</label>
+                                            <span>${trade.timestamp.toLocaleString()}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="trade-section buy-details">
+                                    <h6>Buy Order Details</h6>
+                                    <div class="detail-grid">
+                                        <div class="detail-item">
+                                            <label>Order ID:</label>
+                                            <span>${trade.buyOrder?.orderId || 'N/A'}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <label>Order Type:</label>
+                                            <span>${trade.buyOrder?.orderType || 'N/A'}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <label>Sender Comp ID:</label>
+                                            <span>${trade.buyOrder?.senderCompId || 'N/A'}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <label>Client Order ID:</label>
+                                            <span>${trade.buyOrder?.clOrdId || 'N/A'}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="trade-section sell-details">
+                                    <h6>Sell Order Details</h6>
+                                    <div class="detail-grid">
+                                        <div class="detail-item">
+                                            <label>Order ID:</label>
+                                            <span>${trade.sellOrder?.orderId || 'N/A'}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <label>Order Type:</label>
+                                            <span>${trade.sellOrder?.orderType || 'N/A'}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <label>Sender Comp ID:</label>
+                                            <span>${trade.sellOrder?.senderCompId || 'N/A'}</span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <label>Client Order ID:</label>
+                                            <span>${trade.sellOrder?.clOrdId || 'N/A'}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Remove existing modal if any
+        const existingModal = document.getElementById('tradeModal');
+        if (existingModal) {
+            existingModal.remove();
+        }
+        
+        // Add new modal to DOM
+        document.body.insertAdjacentHTML('beforeend', modalContent);
+        
+        // Show the modal
+        const modal = new bootstrap.Modal(document.getElementById('tradeModal'));
+        modal.show();
     }
 }
 

@@ -155,6 +155,16 @@ class OrderBook {
             </div>
         `).join('');
     }
+
+    /**
+     * @method findOrderById
+     * @description Finds an order by its ID
+     * @param {string} orderId - The ID of the order to find
+     * @returns {Order|null} The found order or null
+     */
+    findOrderById(orderId) {
+        return [...this.bids, ...this.asks].find(order => order.orderId === orderId);
+    }
 }
 
 const orderBook = new OrderBook(); 

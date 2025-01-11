@@ -21,19 +21,19 @@
 }
 
 [data-theme="dark"] {
-    --bg-color: #1a1a1a;
+    --bg-color: #121212;
     --text-color: #e1e1e1;
-    --section-bg: #2d2d2d;
+    --section-bg: #1e1e1e;
     --border-color: #444;
     --shadow-color: rgba(0, 0, 0, 0.3);
-    --header-bg: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+    --header-bg: linear-gradient(135deg, #1e1e1e 0%, #121212 100%);
     --header-text: #fff;
     --button-bg: #2d5a30;
     --button-hover: #1e3d20;
     --bid-bg: rgba(0, 255, 0, 0.05);
     --ask-bg: rgba(255, 0, 0, 0.05);
-    --combo-bg: #2a2a2a;
-    --fix-bg: #2a2a2a;
+    --combo-bg: #1a1a1a;
+    --fix-bg: #1a1a1a;
     --label-color: #b0b0b0;
     --placeholder-color: #888;
 }
@@ -43,13 +43,29 @@ body {
     line-height: 1.6;
     background-color: var(--bg-color);
     color: var(--text-color);
-    transition: background-color 0.3s, color 0.3s;
+    transition: all 0.3s ease;
+    margin: 0;
+    min-height: 100vh;
+}
+
+/* Ensure the background color transitions smoothly */
+html {
+    min-height: 100vh;
+    background-color: var(--bg-color);
+    transition: background-color 0.3s ease;
+}
+
+/* Fix for dark mode background */
+html, body {
+    min-height: 100%;
+    background-color: var(--bg-color);
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    background-color: transparent;
 }
 
 .header-content {
@@ -644,4 +660,137 @@ button:hover {
         bottom: 0;
         opacity: 0;
     }
+}
+
+.trade-card {
+    background: var(--section-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.trade-summary {
+    flex-grow: 1;
+}
+
+.trade-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    align-items: center;
+}
+
+.trade-symbol {
+    font-weight: bold;
+    color: var(--text-color);
+    font-size: 0.95em;
+}
+
+.trade-time {
+    color: #666;
+    font-size: 0.85em;
+}
+
+.trade-details {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 1.1em;
+}
+
+.trade-quantity {
+    font-family: 'Courier New', monospace;
+    color: var(--text-color);
+}
+
+.trade-at {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.trade-price {
+    font-family: 'Courier New', monospace;
+    color: #43a047;
+    font-weight: bold;
+}
+
+.view-trade-btn {
+    background: var(--button-bg);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 0.8em;
+    transition: all 0.3s ease;
+    width: auto;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: normal;
+    white-space: nowrap;
+    margin-left: 15px;
+}
+
+.view-trade-btn:hover {
+    background: var(--button-hover);
+    transform: translateY(-0.5px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+/* Trade Modal Styles */
+.trade-report {
+    padding: 15px;
+}
+
+.trade-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-item label {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.detail-item span {
+    font-family: 'Courier New', monospace;
+    color: var(--text-color);
+}
+
+[data-theme="dark"] .modal-content {
+    background-color: var(--section-bg);
+    color: var(--text-color);
+}
+
+[data-theme="dark"] .modal-header {
+    border-bottom-color: var(--border-color);
+}
+
+[data-theme="dark"] .modal-footer {
+    border-top-color: var(--border-color);
+}
+
+[data-theme="dark"] .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
 } 
