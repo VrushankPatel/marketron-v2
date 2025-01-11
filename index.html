@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Simulator</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Trading Simulator</h1>
+        </header>
+        
+        <div class="main-content">
+            <!-- Market Data Section -->
+            <section class="market-data">
+                <h2>Market Data</h2>
+                <div class="ticker-container" id="tickerContainer">
+                    <!-- Ticker data will be populated here -->
+                </div>
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <select id="chartSymbol">
+                            <!-- Symbols will be populated here -->
+                        </select>
+                        <span class="terminal-controls">
+                            <button class="time-button" data-time="1">1M</button>
+                            <button class="time-button" data-time="5">5M</button>
+                            <button class="time-button active" data-time="15">15M</button>
+                        </span>
+                    </div>
+                    <canvas id="priceChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Order Entry Section -->
+            <section class="order-entry">
+                <h2>New Order</h2>
+                <form id="orderForm">
+                    <div class="form-group">
+                        <label for="symbol">Symbol:</label>
+                        <input type="text" id="symbol" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="orderType">Order Type:</label>
+                        <select id="orderType" required>
+                            <option value="MARKET">Market</option>
+                            <option value="LIMIT">Limit</option>
+                            <option value="STOP">Stop</option>
+                            <option value="STOP_LIMIT">Stop Limit</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="side">Side:</label>
+                        <select id="side" required>
+                            <option value="BUY">Buy</option>
+                            <option value="SELL">Sell</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" id="quantity" min="1" required>
+                    </div>
+
+                    <div class="form-group price-field">
+                        <label for="price">Price:</label>
+                        <input type="number" id="price" step="0.01">
+                    </div>
+
+                    <div class="form-group stop-price-field">
+                        <label for="stopPrice">Stop Price:</label>
+                        <input type="number" id="stopPrice" step="0.01">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="orderCategory">Order Category:</label>
+                        <select id="orderCategory" required>
+                            <option value="SINGLE">Single</option>
+                            <option value="COMBO">Combo</option>
+                        </select>
+                    </div>
+
+                    <div class="combo-fields" style="display: none;">
+                        <h3>Combo Legs</h3>
+                        <div class="form-group">
+                            <label for="legSymbol">Leg Symbol:</label>
+                            <input type="text" id="legSymbol">
+                        </div>
+                        <div class="form-group">
+                            <label for="legRatio">Ratio:</label>
+                            <input type="number" id="legRatio" value="1" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="legSide">Leg Side:</label>
+                            <select id="legSide">
+                                <option value="BUY">Buy</option>
+                                <option value="SELL">Sell</option>
+                            </select>
+                        </div>
+                        <button id="addLeg" class="secondary-button">Add Leg</button>
+                        <div id="comboLegsContainer"></div>
+                    </div>
+
+                    <!-- FIX Protocol Fields -->
+                    <div class="fix-fields">
+                        <h3>FIX Protocol Fields (Optional)</h3>
+                        <div class="form-group">
+                            <label for="senderCompId">Sender Comp ID (Optional):</label>
+                            <input type="text" id="senderCompId" placeholder="Enter Sender Comp ID if needed">
+                        </div>
+                        <div class="form-group">
+                            <label for="senderSubId">Sender Sub ID (Optional):</label>
+                            <input type="text" id="senderSubId" placeholder="Enter Sender Sub ID if needed">
+                        </div>
+                        <div class="form-group">
+                            <label for="targetCompId">Target Comp ID (Optional):</label>
+                            <input type="text" id="targetCompId" placeholder="Enter Target Comp ID if needed">
+                        </div>
+                    </div>
+
+                    <button type="submit">Place Order</button>
+                </form>
+            </section>
+
+            <!-- Order Book Section -->
+            <section class="order-book">
+                <h2>Order Book</h2>
+                <div class="order-book-container">
+                    <div class="bids" id="bids">
+                        <h3>Bids</h3>
+                        <!-- Bid orders will be populated here -->
+                    </div>
+                    <div class="asks" id="asks">
+                        <h3>Asks</h3>
+                        <!-- Ask orders will be populated here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Trades Section -->
+            <section class="trades">
+                <h2>Recent Trades</h2>
+                <div class="trades-container" id="tradesContainer">
+                    <!-- Recent trades will be populated here -->
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="js/orderBook.js"></script>
+    <script src="js/orderEntry.js"></script>
+    <script src="js/marketData.js"></script>
+    <script src="js/orderMatching.js"></script>
+</body>
+</html> 
