@@ -47,17 +47,14 @@ class ResetService {
      * @author Vrushank Patel
      */
     resetApplication() {
-        // Clear localStorage
         localStorage.removeItem(persistenceService.STORAGE_KEY);
 
-        // Show success message
         Swal.fire({
             title: 'Reset Complete',
             text: 'Marketron has been reset successfully.',
             icon: 'success',
             confirmButtonText: 'OK'
         }).then(() => {
-            // Reload the page
             window.location.href = window.location.href;
         });
     }

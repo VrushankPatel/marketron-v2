@@ -5,7 +5,7 @@
  */
 class CryptoUtil {
     constructor() {
-        this.secretKey = 'marketron-v1'; // You might want to make this more secure in production
+        this.secretKey = 'marketron-v1'; // Security key for encryption
     }
 
     /**

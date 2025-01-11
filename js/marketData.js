@@ -134,7 +134,6 @@ class MarketData {
         ctx.strokeStyle = isDarkMode ? '#444' : '#333';
         ctx.lineWidth = 1;
         
-        // Draw vertical grid lines
         for (let i = 0; i < 10; i++) {
             const x = (this.canvas.width / 9) * i;
             ctx.beginPath();
@@ -143,7 +142,6 @@ class MarketData {
             ctx.stroke();
         }
         
-        // Draw horizontal grid lines
         for (let i = 0; i < 5; i++) {
             const y = (this.canvas.height / 4) * i;
             ctx.beginPath();
@@ -152,7 +150,6 @@ class MarketData {
             ctx.stroke();
         }
         
-        // Draw price line with gradient
         const gradient = ctx.createLinearGradient(0, 0, 0, this.canvas.height);
         gradient.addColorStop(0, isDarkMode ? '#00cccc' : '#00ffff');
         gradient.addColorStop(1, isDarkMode ? '#2ecc71' : '#32cd32');
@@ -178,7 +175,6 @@ class MarketData {
         ctx.font = '12px Courier New';
         ctx.textAlign = 'right';
         
-        // Add time labels
         ctx.textAlign = 'center';
         ctx.fillStyle = isDarkMode ? '#777' : '#888';
         const now = new Date();
@@ -188,7 +184,6 @@ class MarketData {
             ctx.fillText(time.toLocaleTimeString(), x, this.canvas.height - 5);
         }
         
-        // Price labels
         ctx.textAlign = 'right';
         ctx.fillStyle = isDarkMode ? '#e6c200' : '#ffd700';
         for (let i = 0; i <= 4; i++) {
@@ -197,7 +192,6 @@ class MarketData {
             ctx.fillText(price.toFixed(2), this.canvas.width - 5, y + 4);
         }
         
-        // Add current price highlight
         const currentPrice = data[data.length - 1].price;
         ctx.fillStyle = isDarkMode ? '#e1e1e1' : '#fff';
         ctx.fillText(`Current: ${currentPrice.toFixed(2)}`, this.canvas.width - 5, 20);

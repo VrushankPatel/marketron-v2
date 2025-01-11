@@ -13,7 +13,6 @@ class OrderBook {
             this.bids = data.orderBook.bids || [];
             this.asks = data.orderBook.asks || [];
             
-            // Reconstruct Date objects for timestamps
             this.bids.forEach(bid => bid.timestamp = new Date(bid.timestamp));
             this.asks.forEach(ask => ask.timestamp = new Date(ask.timestamp));
         }
@@ -51,7 +50,6 @@ class OrderBook {
     }
 
     handleComboOrder(order) {
-        // Create individual orders for each leg
         order.legs.forEach(leg => {
             const legOrder = new Order(
                 leg.symbol,
@@ -81,7 +79,6 @@ class OrderBook {
                 const matchedQuantity = Math.min(topBid.quantity, topAsk.quantity);
                 const matchPrice = topAsk.price;
 
-                // Create trade
                 const trade = {
                     price: matchPrice,
                     quantity: matchedQuantity,
@@ -90,14 +87,11 @@ class OrderBook {
                     sellOrderId: topAsk.orderId
                 };
 
-                // Dispatch trade event
                 document.dispatchEvent(new CustomEvent('newTrade', { detail: trade }));
 
-                // Update quantities
                 topBid.quantity -= matchedQuantity;
                 topAsk.quantity -= matchedQuantity;
 
-                // Remove filled orders
                 if (topBid.quantity === 0) this.bids.shift();
                 if (topAsk.quantity === 0) this.asks.shift();
             } else {
@@ -128,5 +122,4 @@ class OrderBook {
     }
 }
 
-// Initialize order book
 const orderBook = new OrderBook(); 

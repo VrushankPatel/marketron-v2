@@ -55,7 +55,6 @@ class PersistenceService {
      */
     isValidData(data) {
         try {
-            // Check if data has expected structure
             if (data.orderBook) {
                 if (!Array.isArray(data.orderBook.bids) || !Array.isArray(data.orderBook.asks)) {
                     return false;

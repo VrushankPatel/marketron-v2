@@ -67,5 +67,5 @@ class OrderMatching {
     }
 }
 
-// Initialize order matching
+// Marketron entry point
 const orderMatching = new OrderMatching(); 
