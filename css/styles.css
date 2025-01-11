@@ -849,4 +849,39 @@ button:hover {
 
 .profile-link:hover span {
     opacity: 1;
+}
+
+/* Add or update these styles */
+.terminal-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;  /* Small gap between buttons */
+}
+
+.time-button {
+    padding: 2px 8px;  /* Reduced padding */
+    font-size: 0.8rem;  /* Smaller font size */
+    border: 1px solid var(--border-color);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.time-button:hover {
+    background-color: var(--hover-color);
+}
+
+.time-button.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.terminal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
 } 
