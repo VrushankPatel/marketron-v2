@@ -117,10 +117,11 @@ class MarketData {
      * @author Vrushank Patel
      */
     renderChart() {
+        const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
         const ctx = this.ctx;
         const data = this.priceHistory[this.selectedSymbol];
         
-        ctx.fillStyle = '#000';
+        ctx.fillStyle = isDarkMode ? '#1a1a1a' : '#000';
         ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
         if (data.length < 2) return;
@@ -130,7 +131,7 @@ class MarketData {
         const maxPrice = Math.max(...prices);
         const priceRange = maxPrice - minPrice;
         
-        ctx.strokeStyle = '#333';
+        ctx.strokeStyle = isDarkMode ? '#444' : '#333';
         ctx.lineWidth = 1;
         
         // Draw vertical grid lines
@@ -153,8 +154,8 @@ class MarketData {
         
         // Draw price line with gradient
         const gradient = ctx.createLinearGradient(0, 0, 0, this.canvas.height);
-        gradient.addColorStop(0, '#00ffff');
-        gradient.addColorStop(1, '#32cd32');
+        gradient.addColorStop(0, isDarkMode ? '#00cccc' : '#00ffff');
+        gradient.addColorStop(1, isDarkMode ? '#2ecc71' : '#32cd32');
         ctx.strokeStyle = gradient;
         ctx.lineWidth = 2;
         ctx.beginPath();
@@ -173,13 +174,13 @@ class MarketData {
         
         ctx.stroke();
         
-        ctx.fillStyle = '#ffd700';
+        ctx.fillStyle = isDarkMode ? '#e6c200' : '#ffd700';
         ctx.font = '12px Courier New';
         ctx.textAlign = 'right';
         
         // Add time labels
         ctx.textAlign = 'center';
-        ctx.fillStyle = '#888';
+        ctx.fillStyle = isDarkMode ? '#777' : '#888';
         const now = new Date();
         for (let i = 0; i < 5; i++) {
             const x = this.canvas.width - (this.canvas.width / 4) * i;
@@ -189,7 +190,7 @@ class MarketData {
         
         // Price labels
         ctx.textAlign = 'right';
-        ctx.fillStyle = '#ffd700';
+        ctx.fillStyle = isDarkMode ? '#e6c200' : '#ffd700';
         for (let i = 0; i <= 4; i++) {
             const price = minPrice + (priceRange * (i / 4));
             const y = this.canvas.height - (this.canvas.height * (i / 4));
@@ -198,7 +199,7 @@ class MarketData {
         
         // Add current price highlight
         const currentPrice = data[data.length - 1].price;
-        ctx.fillStyle = '#fff';
+        ctx.fillStyle = isDarkMode ? '#e1e1e1' : '#fff';
         ctx.fillText(`Current: ${currentPrice.toFixed(2)}`, this.canvas.width - 5, 20);
     }
 
