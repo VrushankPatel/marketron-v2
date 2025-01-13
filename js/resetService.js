@@ -47,7 +47,19 @@ class ResetService {
      * @author Vrushank Patel
      */
     resetApplication() {
-        localStorage.removeItem(persistenceService.STORAGE_KEY);
+        // Preserve theme setting
+        const currentTheme = localStorage.getItem('theme');
+
+        // Clear all localStorage items
+        localStorage.clear();
+
+        // Restore theme setting
+        if (currentTheme) {
+            localStorage.setItem('theme', currentTheme);
+        }
+
+        // Dispatch reset event for OATM
+        document.dispatchEvent(new CustomEvent('resetMarketron'));
 
         Swal.fire({
             title: 'Reset Complete',

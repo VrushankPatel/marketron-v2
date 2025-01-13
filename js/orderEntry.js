@@ -222,7 +222,8 @@ class OrderEntry {
 
         console.log('Created order:', order);
         document.dispatchEvent(new CustomEvent('newOrder', { detail: order }));
-        
+        document.dispatchEvent(new CustomEvent('orderSubmitted', { detail: order }));
+
         this.form.reset();
         this.comboLegs = [];
         this.renderComboLegs();

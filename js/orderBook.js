@@ -83,6 +83,7 @@ class OrderBook {
                 this.asks.push(order);
                 this.asks.sort((a, b) => a.price - b.price);
             }
+            document.dispatchEvent(new CustomEvent('orderAccepted', { detail: order }));
         }
 
         this.render();
@@ -151,6 +152,12 @@ class OrderBook {
                 };
 
                 document.dispatchEvent(new CustomEvent('newTrade', { detail: trade }));
+                document.dispatchEvent(new CustomEvent('tradeExecuted', { detail: {
+                    ...trade,
+                    symbol: topBid.symbol,
+                    side: topBid.side,
+                    orderType: topBid.orderType
+                }}));
 
                 topBid.quantity -= matchedQuantity;
                 topAsk.quantity -= matchedQuantity;
