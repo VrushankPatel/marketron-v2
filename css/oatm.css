@@ -16,11 +16,12 @@
 }
 
 .oatm-container {
-    height: 300px;
+    height: 600px;
     position: relative;
     width: 100%;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 }
 
 .oatm-header {
@@ -219,4 +220,29 @@
     background: var(--section-bg);
     border: 1px solid var(--border-color);
     color: var(--text-color);
+}
+
+.oatm-card {
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+    width: 45%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Buy order cards */
+.timeline-content[data-type="buy-order"],
+.timeline-content[data-type="buy-accepted"] {
+    background-color: rgba(33, 150, 83, 0.2) !important;  /* Increased opacity */
+}
+
+/* Sell order cards */
+.timeline-content[data-type="sell-order"],
+.timeline-content[data-type="sell-accepted"] {
+    background-color: rgba(235, 87, 87, 0.2) !important;  /* Increased opacity */
+}
+
+/* Trade cards */
+.timeline-content[data-type="trade"] {
+    background-color: rgba(0, 128, 128, 0.2) !important;  /* Increased opacity */
 } 

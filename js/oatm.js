@@ -70,6 +70,16 @@ class OATM {
         const content = document.createElement('div');
         content.className = `timeline-content ${entry.direction === 'client-to-marketron' ? 'left' : 'right'}`;
         
+        if (entry.type === 'order') {
+            if (entry.direction === 'client-to-marketron') {
+                content.setAttribute('data-type', entry.data.side.toLowerCase() + '-order');
+            } else {
+                content.setAttribute('data-type', entry.data.side.toLowerCase() + '-accepted');
+            }
+        } else if (entry.type === 'trade') {
+            content.setAttribute('data-type', 'trade');
+        }
+        
         const timestamp = new Date(entry.timestamp).toLocaleTimeString();
         const escapedData = JSON.stringify(entry.data).replace(/'/g, '&#39;').replace(/"/g, '&quot;');
         
