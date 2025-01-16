@@ -1,4 +1,4 @@
-# Tradaar Trading Platform
+# Tradar Trading Platform
 
 A high-performance, modular trading platform built in Java that implements a complete trading system with order entry, matching engine, market data distribution, and trade reporting capabilities.
 
@@ -28,8 +28,8 @@ The platform consists of the following core modules:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/tradaar.git
-cd tradaar
+git clone https://github.com/VrushankPatel/tradar.git
+cd tradar
 ```
 
 2. Run the setup script to create necessary directories:

@@ -1,8 +1,8 @@
-/Users/vrushank/Desktop/tradaar/core/src/main/java/com/tradaar/core/model/Order.java
-/Users/vrushank/Desktop/tradaar/core/src/main/java/com/tradaar/core/model/OrderStatus.java
-/Users/vrushank/Desktop/tradaar/core/src/main/java/com/tradaar/core/model/TradeCaptureReport.java
-/Users/vrushank/Desktop/tradaar/core/src/main/java/com/tradaar/core/model/Trade.java
-/Users/vrushank/Desktop/tradaar/core/src/main/java/com/tradaar/core/model/OrderType.java
-/Users/vrushank/Desktop/tradaar/core/src/main/java/com/tradaar/core/model/TimeInForce.java
-/Users/vrushank/Desktop/tradaar/core/src/main/java/com/tradaar/core/model/OrderSide.java
-/Users/vrushank/Desktop/tradaar/core/src/main/java/com/tradaar/core/model/ExecutionReport.java
+/Users/vrushank/Desktop/tradar/core/src/main/java/com/tradar/core/model/Order.java
+/Users/vrushank/Desktop/tradar/core/src/main/java/com/tradar/core/model/OrderStatus.java
+/Users/vrushank/Desktop/tradar/core/src/main/java/com/tradar/core/model/TradeCaptureReport.java
+/Users/vrushank/Desktop/tradar/core/src/main/java/com/tradar/core/model/Trade.java
+/Users/vrushank/Desktop/tradar/core/src/main/java/com/tradar/core/model/OrderType.java
+/Users/vrushank/Desktop/tradar/core/src/main/java/com/tradar/core/model/TimeInForce.java
+/Users/vrushank/Desktop/tradar/core/src/main/java/com/tradar/core/model/OrderSide.java
+/Users/vrushank/Desktop/tradar/core/src/main/java/com/tradar/core/model/ExecutionReport.java

@@ -1,4 +1,4 @@
-package com.tradaar.core.config;
+package com.tradar.core.config;
 
 /**
  * Configuration constants for network communication between system components.

@@ -1,4 +1,4 @@
-package com.tradaar.order.entry.ui;
+package com.tradar.order.entry.ui;
 
 import com.tradar.core.model.*;
 import com.tradar.order.entry.network.UDPOrderSender;
