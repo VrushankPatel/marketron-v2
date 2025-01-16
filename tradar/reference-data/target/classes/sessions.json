@@ -1,0 +1,22 @@
+[
+  {
+    "sessionId": "REGULAR",
+    "description": "Regular Trading Hours",
+    "tradingDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"],
+    "startTime": "09:30:00",
+    "endTime": "16:00:00",
+    "preOpen": "09:00:00",
+    "preClose": "15:45:00",
+    "active": true
+  },
+  {
+    "sessionId": "EXTENDED",
+    "description": "Extended Trading Hours",
+    "tradingDays": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"],
+    "startTime": "04:00:00",
+    "endTime": "20:00:00",
+    "preOpen": "03:45:00",
+    "preClose": "19:45:00",
+    "active": true
+  }
+] 

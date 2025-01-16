@@ -1,0 +1,12 @@
+com/tradar/core/model/Order$OrderBuilder.class
+com/tradar/core/model/TimeInForce.class
+com/tradar/core/model/ExecutionReport$ExecutionReportBuilder.class
+com/tradar/core/model/TradeCaptureReport.class
+com/tradar/core/model/OrderSide.class
+com/tradar/core/model/Order.class
+com/tradar/core/model/OrderType.class
+com/tradar/core/model/TradeCaptureReport$TradeCaptureReportBuilder.class
+com/tradar/core/model/Trade.class
+com/tradar/core/model/OrderStatus.class
+com/tradar/core/model/Trade$TradeBuilder.class
+com/tradar/core/model/ExecutionReport.class

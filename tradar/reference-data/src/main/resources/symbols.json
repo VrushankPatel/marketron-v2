@@ -1,0 +1,26 @@
+[
+  {
+    "symbol": "AAPL",
+    "description": "Apple Inc.",
+    "exchange": "NASDAQ",
+    "currency": "USD",
+    "tickSize": 0.01,
+    "lotSize": 1,
+    "minQty": 1,
+    "maxQty": 1000000,
+    "maxPriceDeviation": 10.0,
+    "active": true
+  },
+  {
+    "symbol": "MSFT",
+    "description": "Microsoft Corporation",
+    "exchange": "NASDAQ",
+    "currency": "USD",
+    "tickSize": 0.01,
+    "lotSize": 1,
+    "minQty": 1,
+    "maxQty": 1000000,
+    "maxPriceDeviation": 10.0,
+    "active": true
+  }
+] 

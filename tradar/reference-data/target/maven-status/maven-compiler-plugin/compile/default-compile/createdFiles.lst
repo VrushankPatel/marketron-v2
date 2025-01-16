@@ -1,0 +1,10 @@
+com/tradar/refdata/model/ActorType.class
+com/tradar/refdata/model/Symbol$SymbolBuilder.class
+com/tradar/refdata/manager/SessionManager.class
+com/tradar/refdata/model/Symbol.class
+com/tradar/refdata/manager/ActorManager.class
+com/tradar/refdata/manager/SymbolManager.class
+com/tradar/refdata/model/TradingSession$TradingSessionBuilder.class
+com/tradar/refdata/model/Actor$ActorBuilder.class
+com/tradar/refdata/model/TradingSession.class
+com/tradar/refdata/model/Actor.class

@@ -1,0 +1,20 @@
+[
+  {
+    "actorId": "TRADER1",
+    "name": "John Doe",
+    "type": "TRADER",
+    "allowedSymbols": ["AAPL", "MSFT"],
+    "maxOrderValue": 1000000.00,
+    "dailyTradingLimit": 5000000.00,
+    "active": true
+  },
+  {
+    "actorId": "MM1",
+    "name": "Market Maker 1",
+    "type": "MARKET_MAKER",
+    "allowedSymbols": ["AAPL", "MSFT"],
+    "maxOrderValue": 10000000.00,
+    "dailyTradingLimit": 100000000.00,
+    "active": true
+  }
+] 
