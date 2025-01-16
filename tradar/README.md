@@ -28,7 +28,7 @@ The platform consists of the following core modules:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/VrushankPatel/tradar.git
+git clone https://github.com/VrushankPatel/Marketron.git
 cd tradar
 ```
 
