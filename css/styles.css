@@ -270,11 +270,15 @@ button:hover {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
+    height: 300px;
+    overflow: hidden;
 }
 
 .bids, .asks {
     padding: 10px;
     border-radius: 4px;
+    overflow-y: auto;
+    max-height: 100%;
 }
 
 .bids {
@@ -718,7 +722,7 @@ button:hover {
 
 .snackbar.show {
     visibility: visible;
-    animation: fadein 0.3s;
+    animation: fadein 0.2s;
 }
 
 @keyframes fadein {

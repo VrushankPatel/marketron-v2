@@ -5,23 +5,8 @@
  */
 class SnackbarService {
     constructor() {
-        this.init();
+        this.currentSnackbar = null;
         this.queue = [];
-        this.isShowing = false;
-    }
-
-    /**
-     * @method init
-     * @description Initializes the snackbar element
-     * @author Vrushank Patel
-     */
-    init() {
-        if (!document.getElementById('snackbar')) {
-            const snackbar = document.createElement('div');
-            snackbar.id = 'snackbar';
-            snackbar.className = 'snackbar';
-            document.body.appendChild(snackbar);
-        }
     }
 
     /**
@@ -30,35 +15,37 @@ class SnackbarService {
      * @param {string} message - Message to display
      * @param {string} type - Type of message (success/error)
      */
-    show(message, type = 'success') {
-        this.queue.push({ message, type });
-        if (!this.isShowing) {
-            this.showNext();
-        }
-    }
-
-    /**
-     * @method showNext
-     * @description Shows the next message in queue
-     */
-    showNext() {
-        if (this.queue.length === 0) {
-            this.isShowing = false;
-            return;
+    show(message, type = 'info') {
+        // If there's a current snackbar, remove it immediately
+        if (this.currentSnackbar) {
+            this.currentSnackbar.remove();
+            this.currentSnackbar = null;
         }
 
-        this.isShowing = true;
-        const { message, type } = this.queue.shift();
-        const snackbar = document.getElementById('snackbar');
+        const snackbar = document.createElement('div');
+        snackbar.className = `snackbar ${type}`;
         snackbar.textContent = message;
-        snackbar.className = 'snackbar show ' + type;
+        document.body.appendChild(snackbar);
+        
+        this.currentSnackbar = snackbar;
 
+        // Show the snackbar
         setTimeout(() => {
-            snackbar.className = snackbar.className.replace('show', '');
+            snackbar.classList.add('show');
+        }, 10);
+
+        // Remove after 2 seconds (reduced from default 3 seconds)
+        setTimeout(() => {
+            snackbar.classList.remove('show');
             setTimeout(() => {
-                this.showNext();
-            }, 300); // Wait for fade out animation
-        }, 3000);
+                if (snackbar.parentElement) {
+                    snackbar.remove();
+                }
+                if (this.currentSnackbar === snackbar) {
+                    this.currentSnackbar = null;
+                }
+            }, 200);
+        }, 2000); // Reduced duration
     }
 }
 
