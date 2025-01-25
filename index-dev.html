@@ -44,6 +44,13 @@
                 </div>
                 <div class="header-controls">
                     <div class="header-right">
+                        <button id="simulationButton" class="simulation-button" title="Simulate Trading">
+                            <svg class="simulation-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                                <path d="M7 16l-4-4m0 0l4-4"></path>
+                            </svg>
+                            <span class="simulation-text">Simulate</span>
+                        </button>
                         <button id="resetButton" class="reset-button" title="Reset Marketron">
                             <svg class="reset-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
@@ -260,6 +267,7 @@
     <script src="js/themeToggle.js"></script>
     <script src="js/resetService.js"></script>
     <script src="js/oatm.js"></script>
+    <script src="js/services/simulationService.js"></script>
     <script>
         // Initialize all tooltips
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
