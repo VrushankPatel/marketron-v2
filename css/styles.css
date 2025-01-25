@@ -1059,3 +1059,51 @@ button:hover {
         transform: rotate(360deg);
     }
 }
+
+/* Add these styles to restore the two-column grid layout */
+.order-entry form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+/* Make certain elements span full width */
+.order-entry form button[type="submit"],
+.order-entry form .combo-fields,
+.order-entry form .fix-fields {
+    grid-column: 1 / -1;  /* Span both columns */
+}
+
+.form-group {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ensure proper spacing between form elements */
+.form-group label {
+    margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+}
+
+/* Price and Stop Price fields should be in their own columns */
+.price-field,
+.stop-price-field {
+    margin: 0;
+}
+
+/* Combo fields should be full width */
+.combo-fields {
+    width: 100%;
+    margin: 15px 0;
+}
+
+/* FIX fields should be full width */
+.fix-fields {
+    width: 100%;
+    margin: 15px 0;
+}
