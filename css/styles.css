@@ -1055,6 +1055,54 @@ button:hover {
     width: 70px;
 }
 
+.fixionary-button {
+    background: none;
+    border: none;
+    color: var(--header-text);
+    cursor: pointer;
+    padding: 8px;
+    width: auto;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+.fixionary-button .simulation-text {
+    width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: width 0.3s ease;
+    font-size: 14px;
+}
+
+.fixionary-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+}
+
+.fixionary-button:hover .simulation-text {
+    width: 70px;  /* Adjusted for "Simulate" text */
+}
+
+.simulation-icon {
+    min-width: 24px;
+}
+
+/* Active state styling */
+.fixionary-button.active {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+}
+
+.fixionary-button.active .simulation-icon {
+    animation: rotate 2s linear infinite;
+}
+
+.fixionary-button.active .simulation-text {
+    width: 70px;
+}
+
 @keyframes rotate {
     from {
         transform: rotate(0deg);
